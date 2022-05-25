@@ -5,8 +5,8 @@ $endpoint = $_GET["endpoint"];
 
 switch($endpoint){
     case "login":
-        $username = "admin";
-        $password = "senhafaci";
+        $username = $_POST["username"];
+        $password = $_POST["password"];
         include("controller/login.php");
         print_r("teste");
         break;
