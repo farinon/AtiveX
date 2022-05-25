@@ -14,12 +14,12 @@ $_sep = DIRECTORY_SEPARATOR;
 $base  = str_replace('config', '', dirname(__FILE__));
 $config['path'] = [
     "uploads"   => $base."uploads".$_sep,
-    "helpers"   => $base."app".$_sep."includes".$_sep."helpers".$_sep
+    "helpers"   => $base."api".$_sep."includes".$_sep."helpers".$_sep
 ];
 
 $config['db'] = [
     "host"      => "localhost",
-    "name"      => "academico", 
+    "name"      => "ativex", 
     "username"  => "root",
     "password"  => ""
 ];
