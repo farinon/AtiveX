@@ -3,7 +3,7 @@ if (!access_cookie("token")) {
 }
 
 function logout() {
-    window.location.href = "./login.html";
+    window.location.href = "../login.html";
 }
 
 function access_cookie(cookie_name) {

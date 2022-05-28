@@ -1,5 +1,5 @@
 const alert_error = document.getElementById('alert_error');
-const inp_email = document.getElementById('inp_email');
+const inp_username = document.getElementById('inp_username');
 const inp_password = document.getElementById('inp_password');
 const btn_submit = document.getElementById('btn_submit');
 
@@ -7,35 +7,39 @@ alert_error.hidden = true;
 delete_cookie("token");
 
 const valid_form = () => {
-    return (inp_email.value && inp_password.value) ? true : false;
+    return (inp_username.value && inp_password.value) ? true : false;
 }
 
 function get_token() {
-    fetch('http://localhost:3000/token', {
+    fetch('../../api/?endpoint=login', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: inp_email.value, password: inp_password.value })
+        body: JSON.stringify({ username: inp_username.value, password: inp_password.value })
     })
         .then(response => {
             return response.json()
         })
         .then(response => {
             //console.log(response.token)
-
-            let expiration_days= 2;
-            let date = new Date();
-            date.setTime(date.getTime() + (expiration_days * 24 * 60 * 60 * 1000));
-            let expires = "expires=" + date.toGMTString();
-            document.cookie = "token=" + response.token + "; " + expires;
-            console.log(document.cookie)
-            window.location.href = "./index.html";
+            if(response.token){
+                let expiration_days= 2;
+                let date = new Date();
+                date.setTime(date.getTime() + (expiration_days * 24 * 60 * 60 * 1000));
+                let expires = "expires=" + date.toGMTString();
+                document.cookie = "token=" + response.token + "; " + expires;
+                window.location.href = "./test.php";
+            } else{
+                alert_error.innerText = "Usuário e/ou Password inválido";
+                alert_error.hidden = false;
+            }
+            
         })
         .catch(error => {
             //console.error("Requisição falhou:", error);
-            alert_error.innerText = "E-mail e/ou Password inválido";
+            alert_error.innerText = "Usuário e/ou Password inválido";
             alert_error.hidden = false;
         })
 
