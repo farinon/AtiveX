@@ -1,9 +1,5 @@
-if (!access_cookie("token")) {
-    logout();
-}
-
 function logout() {
-    window.location.href = "../login.html";
+    window.location.href = "login.html";
 }
 
 function access_cookie(cookie_name) {
@@ -15,4 +11,15 @@ function access_cookie(cookie_name) {
             return temp.substring(name.length, temp.length);
     }
     return "";
+}
+
+function get_fetch_params(token) {
+    return {
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+    }
 }
