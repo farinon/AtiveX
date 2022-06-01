@@ -31,4 +31,12 @@ class employee{
         
     }
 
+    function change_password($email, $password){
+        $sql = "UPDATE `employees` SET `password`='$password' WHERE `email` = '$email'";
+        $ret = query($sql);
+        return $ret;
+    }
+
+
+
 }

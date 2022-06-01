@@ -16,11 +16,12 @@ class permission{
         $ret = query($sql);
 
          //print_r($ret);
-         return !empty($ret) ? end($ret) : [];
+         $this->_permissions = !empty($ret) ? end($ret) : [];
     }
 
     public function has_permission_to($permission){        
         $permissions = $this->_permissions;
+        
         $ret = false;
         
         if(!empty($permission)&& !empty($permissions) && !empty($permissions[$permission])){            

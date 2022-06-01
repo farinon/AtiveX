@@ -11,10 +11,15 @@ function test() {
                 return response.json()
             })
             .then(response => {
-                response = JSON.parse(response)
-                console.log(response.error)
+                console.log(response);
+                //response = JSON.parse(response)
+                //console.log(response.error)
+                if(!response.error){
+                    document.getElementById("texto").innerHTML = response.text;
+                } else{
+                    document.getElementById("texto").innerHTML = response.error;
+                }
                 
-                document.getElementById("texto").innerHTML = "Oi meu amigo";
             })
             .catch(error => {
                 console.error("Requisição falhou:", error);
