@@ -12,27 +12,43 @@ class employee{
     }
 
     function get($p){
-
+        $sql = "SELECT * FROM `employees` WHERE `id = `$p[id]";
+        $ret = query($sql);
+        $ret = (!empty($ret))? end($ret) : [];
+        return $ret;
     }
 
-    function get_list($p){
-
+    function get_list($p = []){
+        $sql = "SELECT * FROM `employees`";
+        $ret = query($sql);
+        return $ret;
     }
 
     function insert($p){
-
+        $sql = "INSERT INTO `employees`(`name`,    `email`,    `username`,    `password`,    `employee_role_id`,    `active`) 
+                                VALUES ('$p[name]','$p[email]','$p[username]','$p[password]','$p[employee_role_id]',1)";
+        $ret = query($sql);
+        return $ret;
     }
 
     function update($p){
-
+        $sql = "UPDATE `employees` 
+                    SET `name`='$p[name]',`email`='$p[email]',`username`='$p[username]',`password`='$p[password]',`employee_role_id`='$p[employee_role_id]',`active`=$p[active] 
+                    WHERE `id = `$p[id]";
+        $ret = query($sql);
+        return $ret;
     }
 
     function delete($p){
-        
+        $sql = "DELETE FROM `employees` 
+                    WHERE `id = `$p[id]";
+        $ret = query($sql);
+        return $ret;
     }
 
     function change_password($email, $password){
-        $sql = "UPDATE `employees` SET `password`='$password' WHERE `email` = '$email'";
+        $sql = "UPDATE `employees` SET `password`='$password' 
+                    WHERE `email` = '$email'";
         $ret = query($sql);
         return $ret;
     }
