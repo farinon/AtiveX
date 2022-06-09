@@ -29,4 +29,8 @@ class permission{
         }
         return $ret;
     }
+
+    public function get_user_permissions(){
+        return  $this->_permissions;
+    }
 }
