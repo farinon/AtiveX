@@ -22,7 +22,7 @@ function query($sql){
 			$ret = $db->lastInsertId();
 		}else{
 			//print_r($sql);
-			$ret = $prep->fetchAll();
+			$ret = $prep->fetchAll(PDO::FETCH_ASSOC);
 		}		
 
 	return $ret;

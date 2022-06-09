@@ -12,7 +12,7 @@ class employee{
     }
 
     function get($p){
-        $sql = "SELECT * FROM `employees` WHERE `id = `$p[id]";
+        $sql = "SELECT * FROM `employees` WHERE `id` = $p[id]";
         $ret = query($sql);
         $ret = (!empty($ret))? end($ret) : [];
         return $ret;
@@ -34,15 +34,29 @@ class employee{
     function update($p){
         $sql = "UPDATE `employees` 
                     SET `name`='$p[name]',`email`='$p[email]',`username`='$p[username]',`password`='$p[password]',`employee_role_id`='$p[employee_role_id]',`active`=$p[active] 
-                    WHERE `id = `$p[id]";
+                    WHERE `id`  = $p[id]";
         $ret = query($sql);
         return $ret;
     }
 
     function delete($p){
         $sql = "DELETE FROM `employees` 
-                    WHERE `id = `$p[id]";
+                    WHERE `id` = $p[id]";
         $ret = query($sql);
+        return $ret;
+    }
+
+    function count($active = 1){
+        $sql = "SELECT COUNT(*) users FROM `employees` ";
+        $sql .= ($active==0 || $active ==1) ? "WHERE active = $active" : "";
+        $ret = query($sql);
+        return end($ret);
+    }
+
+    function exists($p){
+        $sql = "SELECT id FROM `employees` WHERE `username` = '$p[username]' || `email` = '$p[email]'";
+        $ret = query($sql);
+        $ret = (empty($ret))? false : true;
         return $ret;
     }
 
