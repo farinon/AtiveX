@@ -1,88 +1,151 @@
--- MariaDB dump 10.19  Distrib 10.4.24-MariaDB, for Win64 (AMD64)
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost    Database: ativex
--- ------------------------------------------------------
--- Server version	10.4.24-MariaDB
+-- Host: db
+-- Tempo de geração: 15-Jun-2022 às 21:32
+-- Versão do servidor: 8.0.29
+-- versão do PHP: 8.0.19
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `employees`
+-- Banco de dados: `ativex`
 --
 
-DROP TABLE IF EXISTS `employees`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  `employee_role_id` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`),
-  KEY `fk_Employees_Employees_roles1_idx` (`employee_role_id`),
-  CONSTRAINT `fk_Employees_Employees_roles1` FOREIGN KEY (`employee_role_id`) REFERENCES `employees_roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `employees`
+-- Estrutura da tabela `Employees`
 --
 
-LOCK TABLES `employees` WRITE;
-/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,'Poderoso Chefão','chefe@gmail.com','chefe','senha',1,1),(2,'Orelha Seca','oreiaseca@gmail.com','oreiaseca','senha',2,1);
-/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
-UNLOCK TABLES;
+CREATE TABLE `Employees` (
+  `id` int NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `employee_role_id` int NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Table structure for table `employees_roles`
+-- Extraindo dados da tabela `Employees`
 --
 
-DROP TABLE IF EXISTS `employees_roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees_roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
-  `p_reg_employees` tinyint(4) NOT NULL DEFAULT 1,
-  `p_reg_sectors` tinyint(4) NOT NULL DEFAULT 1,
-  `p_reg_assets` tinyint(4) NOT NULL DEFAULT 1,
-  `p_man_assets` tinyint(4) NOT NULL DEFAULT 1,
-  `p_track_asset` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
+INSERT INTO `Employees` (`id`, `name`, `email`, `username`, `password`, `employee_role_id`, `active`) VALUES
+(1, 'Poderoso Chefão', 'chefe@gmail.com', 'chefe', 'senha', 1, 1),
+(2, 'Orelha Seca', 'oreiaseca@gmail.com', 'oreiaseca', 'senha', 2, 1);
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `employees_roles`
+-- Estrutura da tabela `Employees_roles`
 --
 
-LOCK TABLES `employees_roles` WRITE;
-/*!40000 ALTER TABLE `employees_roles` DISABLE KEYS */;
-INSERT INTO `employees_roles` VALUES (1,'administrador','Administrador',1,1,1,1,1),(2,'trabalhador','Trabalhador',0,0,0,1,1);
-/*!40000 ALTER TABLE `employees_roles` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+CREATE TABLE `Employees_roles` (
+  `id` int NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `p_reg_employees` tinyint NOT NULL DEFAULT '1',
+  `p_reg_sectors` tinyint NOT NULL DEFAULT '1',
+  `p_reg_assets` tinyint NOT NULL DEFAULT '1',
+  `p_man_assets` tinyint NOT NULL DEFAULT '1',
+  `p_track_asset` tinyint NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Extraindo dados da tabela `Employees_roles`
+--
+
+INSERT INTO `Employees_roles` (`id`, `name`, `description`, `p_reg_employees`, `p_reg_sectors`, `p_reg_assets`, `p_man_assets`, `p_track_asset`) VALUES
+(1, 'administrador', 'Administrador', 1, 1, 1, 1, 1),
+(2, 'trabalhador', 'Trabalhador', 0, 0, 0, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `Sectors`
+--
+
+CREATE TABLE `Sectors` (
+  `id` int NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Extraindo dados da tabela `Sectors`
+--
+
+INSERT INTO `Sectors` (`id`, `name`, `description`, `phone`) VALUES
+(1, 'mat-rh', 'Matriz - RH', '069-69696969');
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices para tabela `Employees`
+--
+ALTER TABLE `Employees`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_Employees_Employees_roles1_idx` (`employee_role_id`);
+
+--
+-- Índices para tabela `Employees_roles`
+--
+ALTER TABLE `Employees_roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `Sectors`
+--
+ALTER TABLE `Sectors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT de tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `Employees`
+--
+ALTER TABLE `Employees`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `Employees_roles`
+--
+ALTER TABLE `Employees_roles`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `Sectors`
+--
+ALTER TABLE `Sectors`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `Employees`
+--
+ALTER TABLE `Employees`
+  ADD CONSTRAINT `fk_Employees_Employees_roles1` FOREIGN KEY (`employee_role_id`) REFERENCES `Employees_roles` (`id`);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2022-06-01 17:45:40
