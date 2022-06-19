@@ -104,7 +104,7 @@ switch($endpoint){
                     delete($data);
                     break;
                 case "COUNT":
-                    count_users();
+                    count_sectors();
                     break;
                 }
 
@@ -112,5 +112,36 @@ switch($endpoint){
             die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
         }
         break;
+    case "asset":
+        //&& $permissions->has_permission_to("p_reg_sectors")  
+            if($valid_token){
+                $data = json_decode(file_get_contents("php://input"), true);
+                include("controller/asset-controller.php");
+                switch($verb){
+                    case "POST":
+                        insert($data);
+                        break;
+                    case "GET":
+                        if(empty($data)){
+                            get_list();
+                        } else{
+                            get($data);
+                        }
+                        break;
+                    case "PATCH":
+                        update($data);
+                        break;
+                    case "DELETE":
+                        delete($data);
+                        break;
+                    case "COUNT":
+                        count_users();
+                        break;
+                    }
+    
+                } else{
+                die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
+            }
+            break;
 }
 ?>
