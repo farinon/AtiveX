@@ -37,7 +37,7 @@ function delete($p){
     die(json_encode($ret));
 }
 
-function count_users(){
+function count_sectors(){
     global $model_sector;
     $ret = $model_sector->count();
     die(json_encode($ret));
