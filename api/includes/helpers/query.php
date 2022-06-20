@@ -28,3 +28,17 @@ function query($sql){
 	return $ret;
 	
 }
+
+function array_to_where($p){
+	if(!empty($p)){
+		$ret =" WHERE ";
+		$params = [];
+		foreach($p as $k=>$v){
+			$params[] = "`$k` = $v";
+		}
+		$ret .= implode("AND", $params);
+		return $ret;
+	} else{
+		return "";
+	}	
+}
