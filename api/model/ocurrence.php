@@ -8,14 +8,14 @@ class ocurrence{
     }
 
     function get_list($p = []){
-        $sql = "SELECT * FROM `Ocurrences`";
+        $sql = "SELECT * FROM `Ocurrences`.array_to_where($p)";
         $ret = query($sql);
         return $ret;
     }
 
     function insert($p){
-        $sql = "INSERT INTO `Ocurrences`(`description`, `action_notes`, `status`, `value`) 
-                                VALUES ('$p[description]', NOW(), '$p[action_notes]', $p[status], $p[value])";
+        $sql = "INSERT INTO `Ocurrences`(`description`, `date_time`, `action_notes`, `status`, `value`, `asset_id`) 
+                                VALUES ('$p[description]', NOW(), '$p[action_notes]', $p[status], $p[value],  $p[asset_id])";
         $ret = query($sql);
         return $ret;
     }
@@ -34,7 +34,7 @@ class ocurrence{
         $ret = query($sql);
         return $ret;
     }
-
+    
     function count(){
         $sql = "SELECT COUNT(*) sector FROM `Ocurrences` ";
         $ret = query($sql);
