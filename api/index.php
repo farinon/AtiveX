@@ -42,14 +42,14 @@ switch($endpoint){
             include("controller/test-controller.php");
             test($username);
         } else{
-            die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
+            die(error(1));
         }
         break;
     case "permissions":  
         if($valid_token){
            die(json_encode($permissions->get_user_permissions()));
         } else{
-            die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
+            die(error(1));
         }
         break;
     case "employee":  
@@ -79,7 +79,7 @@ switch($endpoint){
                 }
 
             } else{
-            die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
+            die(error(1));
         }
         break;
     case "sector":  
@@ -109,30 +109,49 @@ switch($endpoint){
                 }
 
             } else{
-            die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
+            die(error(1));
         }
         break;
     case "asset":
-        //&& $permissions->has_permission_to("p_reg_sectors")  
+        //&& 
+        //p_reg_assets p_man_assets p_track_asset  
             if($valid_token){
                 $data = json_decode(file_get_contents("php://input"), true);
                 include("controller/asset-controller.php");
                 switch($verb){
                     case "POST":
-                        insert($data);
+                        if($permissions->has_permission_to("p_reg_assets")){
+                            insert($data);
+                        } else{
+                            die(error(1));
+                        }
+                        
                         break;
                     case "GET":
-                        if(empty($data)){
-                            get_list();
+                        if($permissions->has_permission_to("p_track_asset")){
+                            if(empty($data)){
+                                get_list();
+                            } else{
+                                get($data);
+                            }
                         } else{
-                            get($data);
+                            die(error(1));
                         }
                         break;
                     case "PATCH":
-                        update($data);
+                        if($permissions->has_permission_to("p_man_assets")){
+                            update($data);
+                        } else{
+                            die(error(1));
+                        }
                         break;
                     case "DELETE":
-                        delete($data);
+                        if($permissions->has_permission_to("p_man_assets")){
+                            delete($data);
+                        } else{
+                            die(error(1));
+                        }
+
                         break;
                     case "COUNT":
                         count_users();
@@ -140,8 +159,35 @@ switch($endpoint){
                     }
     
                 } else{
-                die(json_encode(["error"=>"Usuário não autorizado a usar o recurso"]));
+                die(error(1));
             }
             break;
+            case "ocurrence":  
+                if($valid_token && $permissions->has_permission_to("p_man_assets")){
+                    $data = json_decode(file_get_contents("php://input"), true);
+                    include("controller/ocurrence-controller.php");
+                    switch($verb){
+                        case "POST":
+                            insert($data);
+                            break;
+                        case "GET":
+                            get_list($data);
+                            break;
+                        case "PATCH":
+                            update($data);
+                            break;                        
+                        }
+        
+                    } else{
+                    die(error(1));
+                }
+                break;
+}
+
+function error($id){
+    $errors = [
+        1 => "Usuário não autorizado a usar o recurso"
+    ];
+    return json_encode($errors[$id]);
 }
 ?>

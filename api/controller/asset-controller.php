@@ -66,8 +66,20 @@ function add_ocurrence($p){
     return (json_encode($ret));
 }
 
+function get_ocurrences($p){
+    $model_ocurrence = new ocurrence();
+    $ret = $model_ocurrence->get_list($p);
+    die(json_encode($ret));
+}
+
 function add_maintence($p){
     $model_maintence = new maintence();
     $ret = $model_maintence->insert($p);
     return (json_encode($ret));
+}
+
+function get_maintences($p){
+    $model_maintence = new maintence();
+    $ret = $model_maintence->get_list($p);
+    die(json_encode($ret));
 }

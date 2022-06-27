@@ -8,7 +8,7 @@ class ocurrence{
     }
 
     function get_list($p = []){
-        $sql = "SELECT * FROM `Ocurrences`.array_to_where($p)";
+        $sql = "SELECT * FROM `Ocurrences`".array_to_where($p);
         $ret = query($sql);
         return $ret;
     }
