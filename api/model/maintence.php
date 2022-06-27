@@ -8,7 +8,7 @@ class maintence{
     }
 
     function get_list($p = []){
-        $sql = "SELECT * FROM `Maintences`.array_to_where($p)";
+        $sql = "SELECT * FROM `Maintences`".array_to_where($p);
         $ret = query($sql);
         return $ret;
     }
