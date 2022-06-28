@@ -52,65 +52,83 @@ switch($endpoint){
             die(error(1));
         }
         break;
-    case "employee":  
-        if($valid_token && $permissions->has_permission_to("p_reg_employees")){
-            $data = json_decode(file_get_contents("php://input"), true);
-            include("controller/employee-controller.php");
-            switch($verb){
-                case "POST":
-                    insert($data);
-                    break;
-                case "GET":
+    case "employee":
+        if($valid_token){
+            if($permissions->has_permission_to("p_reg_employees")){
+                $data = json_decode(file_get_contents("php://input"), true);
+                include("controller/employee-controller.php");
+                switch($verb){
+                    case "POST":
+                        insert($data);
+                        break;
+                    case "GET":
+                        if(empty($data)){
+                            get_list();
+                        } else{
+                            get($data);
+                        }
+                        break;
+                    case "PATCH":
+                        update($data);
+                        break;
+                    case "DELETE":
+                        delete($data);
+                        break;
+                    case "COUNT":
+                        count_users();
+                        break;
+                    }
+    
+                }elseif($permissions->has_permission_to("p_view_employees") && $verb=="GET"){
                     if(empty($data)){
                         get_list();
                     } else{
                         get($data);
                     }
-                    break;
-                case "PATCH":
-                    update($data);
-                    break;
-                case "DELETE":
-                    delete($data);
-                    break;
-                case "COUNT":
-                    count_users();
-                    break;
-                }
-
-            } else{
-            die(error(1));
-        }
+                } else{
+                die(error(1));
+            }
+        }  
+        
         break;
-    case "sector":  
-        if($valid_token && $permissions->has_permission_to("p_reg_sectors")){
-            $data = json_decode(file_get_contents("php://input"), true);
-            include("controller/sector-controller.php");
-            switch($verb){
-                case "POST":
-                    insert($data);
-                    break;
-                case "GET":
+    case "sector":
+        if($valid_token){
+            if($permissions->has_permission_to("p_reg_sectors")){
+                $data = json_decode(file_get_contents("php://input"), true);
+                include("controller/sector-controller.php");
+                switch($verb){
+                    case "POST":
+                        insert($data);
+                        break;
+                    case "GET":
+                        if(empty($data)){
+                            get_list();
+                        } else{
+                            get($data);
+                        }
+                        break;
+                    case "PATCH":
+                        update($data);
+                        break;
+                    case "DELETE":
+                        delete($data);
+                        break;
+                    case "COUNT":
+                        count_sectors();
+                        break;
+                    }
+    
+                }elseif($permissions->has_permission_to("p_view_sectors") && $verb=="GET"){
                     if(empty($data)){
                         get_list();
                     } else{
                         get($data);
                     }
-                    break;
-                case "PATCH":
-                    update($data);
-                    break;
-                case "DELETE":
-                    delete($data);
-                    break;
-                case "COUNT":
-                    count_sectors();
-                    break;
-                }
-
-            } else{
-            die(error(1));
-        }
+                } else{
+                die(error(1));
+            }
+        }  
+        
         break;
     case "asset":
         //&& 
