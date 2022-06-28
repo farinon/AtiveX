@@ -30,8 +30,9 @@ class sector{
     }
 
     function delete($p){
-        $sql = "DELETE FROM `Sectors` 
-                    WHERE `id` = $p[id]";
+        $sql = "UPDATE `Sectors` 
+                    SET `status` = 0 
+                    WHERE `id`  = $p[id]";
         $ret = query($sql);
         return $ret;
     }

@@ -38,8 +38,9 @@ class employee{
     }
 
     function delete($p){
-        $sql = "DELETE FROM `Employees` 
-                    WHERE `id` = $p[id]";
+        $sql = "UPDATE `Employees` 
+                    SET `active`= 0  
+                    WHERE `id`  = $p[id]";
         $ret = query($sql);
         return $ret;
     }

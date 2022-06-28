@@ -37,7 +37,8 @@ class asset{
     }
 
     function delete($p){
-        $sql = "DELETE FROM `Assets` 
+        $sql = "UPDATE `Assets`
+                    SET  `assets_status_id` = 3 
                     WHERE `id` = $p[id]";
         $ret = query($sql);
         return $ret;
