@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Tempo de geração: 20-Jun-2022 às 06:37
+-- Tempo de geração: 28-Jun-2022 às 04:14
 -- Versão do servidor: 8.0.29
 -- versão do PHP: 8.0.19
 
@@ -39,16 +39,29 @@ CREATE TABLE `Assets` (
   `employee_id` int DEFAULT NULL,
   `sector_id` int NOT NULL,
   `maintence_interval` int NOT NULL DEFAULT '365',
-  `standard_maintence_time` int NOT NULL DEFAULT '0'
+  `standard_maintence_time` int NOT NULL DEFAULT '0',
+  `assets_status_id` int NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `Assets_status`
+--
+
+CREATE TABLE `Assets_status` (
+  `id` int NOT NULL,
+  `description` varchar(45) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Extraindo dados da tabela `Assets`
+-- Extraindo dados da tabela `Assets_status`
 --
 
-INSERT INTO `Assets` (`id`, `name`, `description`, `purchase_date`, `purchase_value`, `start_use_date`, `actual_value`, `depreciation_rule`, `employee_id`, `sector_id`, `maintence_interval`, `standard_maintence_time`) VALUES
-(1, 'Bola Quadrada', 'bem bonita', '2021-07-27', '2', '2021-08-27', '2', 'actual_value*0.005', 1, 1, 180, 0),
-(2, 'Bola Hexagonal', 'bem bonita', '2021-07-27', '2', '2021-08-27', '2', 'actual_value*0.005', 1, 1, 180, 0);
+INSERT INTO `Assets_status` (`id`, `description`) VALUES
+(1, 'Guardado'),
+(2, 'Em uso'),
+(3, 'Descartado');
 
 -- --------------------------------------------------------
 
@@ -85,7 +98,9 @@ CREATE TABLE `Employees_roles` (
   `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `p_reg_employees` tinyint NOT NULL DEFAULT '1',
+  `p_view_employees` tinyint NOT NULL,
   `p_reg_sectors` tinyint NOT NULL DEFAULT '1',
+  `p_view_sectors` tinyint NOT NULL,
   `p_reg_assets` tinyint NOT NULL DEFAULT '1',
   `p_man_assets` tinyint NOT NULL DEFAULT '1',
   `p_track_asset` tinyint NOT NULL
@@ -95,9 +110,9 @@ CREATE TABLE `Employees_roles` (
 -- Extraindo dados da tabela `Employees_roles`
 --
 
-INSERT INTO `Employees_roles` (`id`, `name`, `description`, `p_reg_employees`, `p_reg_sectors`, `p_reg_assets`, `p_man_assets`, `p_track_asset`) VALUES
-(1, 'administrador', 'Administrador', 1, 1, 1, 1, 1),
-(2, 'trabalhador', 'Trabalhador', 0, 0, 0, 1, 1);
+INSERT INTO `Employees_roles` (`id`, `name`, `description`, `p_reg_employees`, `p_view_employees`, `p_reg_sectors`, `p_view_sectors`, `p_reg_assets`, `p_man_assets`, `p_track_asset`) VALUES
+(1, 'administrador', 'Administrador', 1, 1, 1, 1, 1, 1, 1),
+(2, 'trabalhador', 'Trabalhador', 0, 1, 0, 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -116,14 +131,6 @@ CREATE TABLE `Maintences` (
   `value` decimal(10,0) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Extraindo dados da tabela `Maintences`
---
-
-INSERT INTO `Maintences` (`id`, `asset_id`, `description`, `date_time`, `time_to_complete`, `action_notes`, `status`, `value`) VALUES
-(1, 1, 'Primeira manutenção preventiva.', '2022-02-23 00:00:00', 0, '', 0, '0'),
-(2, 2, 'Primeira manutenção preventiva.', '2022-02-23 00:00:00', 0, '', 0, '0');
-
 -- --------------------------------------------------------
 
 --
@@ -140,14 +147,6 @@ CREATE TABLE `Ocurrences` (
   `value` decimal(10,0) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Extraindo dados da tabela `Ocurrences`
---
-
-INSERT INTO `Ocurrences` (`id`, `asset_id`, `description`, `date_time`, `action_notes`, `status`, `value`) VALUES
-(1, 1, 'Controle de ativo iniciado.', '2022-06-20 06:36:09', '', 0, '0'),
-(2, 2, 'Controle de ativo iniciado.', '2022-06-20 06:36:29', '', 0, '0');
-
 -- --------------------------------------------------------
 
 --
@@ -156,17 +155,19 @@ INSERT INTO `Ocurrences` (`id`, `asset_id`, `description`, `date_time`, `action_
 
 CREATE TABLE `Sectors` (
   `id` int NOT NULL,
-  `name` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `description` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `phone` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `phone` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` tinyint NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Extraindo dados da tabela `Sectors`
 --
 
-INSERT INTO `Sectors` (`id`, `name`, `description`, `phone`) VALUES
-(1, 'mat-rh', 'Matriz - RH', '069-69696969');
+INSERT INTO `Sectors` (`id`, `name`, `description`, `phone`, `status`) VALUES
+(1, 'mat-alm', 'Almoxarifado (matriz)', '9696969', 1),
+(2, 'lab-1', 'Laboratório 1', '69696969', 1);
 
 --
 -- Índices para tabelas despejadas
@@ -178,7 +179,14 @@ INSERT INTO `Sectors` (`id`, `name`, `description`, `phone`) VALUES
 ALTER TABLE `Assets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_Assets_Employee_idx` (`employee_id`),
-  ADD KEY `fk_Assets_Sectors1_idx` (`sector_id`);
+  ADD KEY `fk_Assets_Sectors1_idx` (`sector_id`),
+  ADD KEY `fk_Assets_assets_status1_idx` (`assets_status_id`);
+
+--
+-- Índices para tabela `Assets_status`
+--
+ALTER TABLE `Assets_status`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `Employees`
@@ -221,7 +229,13 @@ ALTER TABLE `Sectors`
 -- AUTO_INCREMENT de tabela `Assets`
 --
 ALTER TABLE `Assets`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `Assets_status`
+--
+ALTER TABLE `Assets_status`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `Employees`
@@ -239,19 +253,19 @@ ALTER TABLE `Employees_roles`
 -- AUTO_INCREMENT de tabela `Maintences`
 --
 ALTER TABLE `Maintences`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `Ocurrences`
 --
 ALTER TABLE `Ocurrences`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `Sectors`
 --
 ALTER TABLE `Sectors`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restrições para despejos de tabelas
@@ -261,6 +275,7 @@ ALTER TABLE `Sectors`
 -- Limitadores para a tabela `Assets`
 --
 ALTER TABLE `Assets`
+  ADD CONSTRAINT `fk_Assets_assets_status1` FOREIGN KEY (`assets_status_id`) REFERENCES `Assets_status` (`id`),
   ADD CONSTRAINT `fk_Assets_Employee` FOREIGN KEY (`employee_id`) REFERENCES `Employees` (`id`),
   ADD CONSTRAINT `fk_Assets_Sectors1` FOREIGN KEY (`sector_id`) REFERENCES `Sectors` (`id`);
 
