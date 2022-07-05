@@ -180,26 +180,46 @@ switch($endpoint){
                 die(error(1));
             }
             break;
-            case "ocurrence":  
-                if($valid_token && $permissions->has_permission_to("p_man_assets")){
-                    $data = json_decode(file_get_contents("php://input"), true);
-                    include("controller/ocurrence-controller.php");
-                    switch($verb){
-                        case "POST":
-                            insert($data);
-                            break;
-                        case "GET":
-                            get_list($data);
-                            break;
-                        case "PATCH":
-                            update($data);
-                            break;                        
-                        }
-        
-                    } else{
-                    die(error(1));
+    case "ocurrence":  
+        if($valid_token && $permissions->has_permission_to("p_man_assets")){
+            $data = json_decode(file_get_contents("php://input"), true);
+            include("controller/ocurrence-controller.php");
+            switch($verb){
+                case "POST":
+                    insert($data);
+                    break;
+                case "GET":
+                    get_list($data);
+                    break;
+                case "PATCH":
+                    update($data);
+                    break;                        
                 }
-                break;
+
+            } else{
+            die(error(1));
+        }
+        break;
+    case "maintence":  
+        if($valid_token && $permissions->has_permission_to("p_man_assets")){
+            $data = json_decode(file_get_contents("php://input"), true);
+            include("controller/maintence-controller.php");
+            switch($verb){
+                case "POST":
+                    insert($data);
+                    break;
+                case "GET":
+                    get_list($data);
+                    break;
+                case "PATCH":
+                    update($data);
+                    break;                        
+                }
+
+            } else{
+            die(error(1));
+        }
+        break;
 }
 
 function error($id){
